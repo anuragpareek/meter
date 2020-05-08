@@ -14,9 +14,7 @@ var router = _express["default"].Router();
 
 
 router.get('/', function (req, res, next) {
-  res.send({
-    title: 'Welcome to meter reading software'
-  });
+  res.send('Welcome to meter reading software, User postman colletion to test API till React app is not available');
 });
 var _default = router;
 exports["default"] = _default;
