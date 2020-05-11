@@ -1,6 +1,7 @@
 import fs from 'fs';
 import csv from 'csvtojson';
 import path from 'path';
+import { get, slice, orderBy as orderThem } from 'lodash';
 
 const fileName = 'metering_data';
 const indexs = {
@@ -25,7 +26,7 @@ export const load = async () => {
   return 'success';
 };
 
-export const get = async ({ meterId, startDate, endDate, orderBy = 'timestamp' } = {}, { page = 0, limit = 10 } = {}) => {
+export const fetch = async ({ meterId, startDate, endDate, order = 'desc', orderBy = 'timestamp', page = 0, limit = 10 } = {}) => {
   const rawdata = fs.readFileSync(path.join(__dirname, `../public/${fileName}.json`));
   let readingData = JSON.parse(rawdata);
 
@@ -52,17 +53,17 @@ export const get = async ({ meterId, startDate, endDate, orderBy = 'timestamp' }
   }
 
   // Sort on basis of passed order by if orderBy is not a valid param then default sort is used
-  const orderIndex = indexs[orderBy] || indexs.timestamp;
-
-  readingData = readingData.sort(function(a, b) {
-    return b[orderIndex] - a[orderIndex];
-  });
-
+  const orderIndex = get(indexs, orderBy, indexs.timestamp);
+  
   // Get Count before pagination so that we can get count of complete data after filters
   const count = readingData.length;
-
+  
+  readingData = orderThem(readingData, [orderIndex, indexs.timestamp], [order, 'desc'])
+  
   if (page && limit) {
-    readingData = readingData.splice((--page)*limit, limit);
+    const start = page * limit;
+    const end = start + +limit
+    readingData = slice(readingData, start, end);
   }
 
   return {data:readingData,count};

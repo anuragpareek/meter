@@ -1,12 +1,12 @@
 import express from 'express';
 
-import { load, get } from '../meterReadingService';
+import { load, fetch } from '../meterReadingService';
 
 const router = express.Router();
 
 /* GET users listing. */
 router.get('/', async (req, res, next) => {
-  const readingData = await get();
+  const readingData = await fetch({...req.query});
   res.status(200).send(readingData);
 });
 
@@ -16,12 +16,12 @@ router.get('/load', async (req, res, next) => {
 });
 
 router.get('/:meterId', async (req, res, next) => {
-  const {data} = await get({ meterId: req.params.meterId });
+  const {data} = await fetch({ meterId: req.params.meterId });
   res.status(200).send(data);
 });
 
 router.post('/', async (req, res, next) => {
-  const readingData = await get(req.body, req.query);
+  const readingData = await fetch({...req.body, ...req.query});
   res.status(200).send(readingData);
 });
 
