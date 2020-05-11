@@ -18,14 +18,21 @@ Clone the repo and install the dependencies.
 
 ```bash
 git clone https://github.com/anuragpareek/meter.git
-cd meter
 ```
 
 ```bash
+cd meter/server
 npm install
 ```
 
-## Steps for read-only access
+```bash
+cd meter/frontend
+npm install
+```
+
+Now both part ready with all dependencies
+
+## Steps to start server
 
 To start the express server, run the following
 
@@ -33,4 +40,12 @@ To start the express server, run the following
 npm run start:dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) and take a look around.
+Open [http://localhost:3001](http://localhost:3001) and take a look around.
+
+To start the react server, run the following
+
+```bash
+npm start
+```
+
+Automatically Browser get Open if not please hit [http://localhost:3000](http://localhost:3000) and take a look around.
